@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.github.asus4.tflite": "https://github.com/asus4/tf-lite-unity-sample.git?path=/Packages/com.github.asus4.tflite",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.8",
     "com.unity.collab-proxy": "2.9.3",
     "com.unity.ide.rider": "3.0.36",

@@ -6,7 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/SpalshScreen.unity
+    guid: 9d27e55b38851214cb3e2d07f45b58cf
+  - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: bba8e0860d76fb646992e14d5f58aebb
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 7ccbef89fe5f71444ae29e62d46fc369, type: 2}
