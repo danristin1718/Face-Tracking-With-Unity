@@ -137,7 +137,7 @@ Berikut langkah-langkah untuk menjalankan proyek ini dari GitHub.
 ### 🔹 Langkah 1: Clone Repositori
 
 ```bash
-git clone https://github.com/ldclabs/anda
+git clone https://github.com/danristin1718/Face-Tracking-With-Unity.git
 ```
 
 ---
