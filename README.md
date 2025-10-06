@@ -1,4 +1,4 @@
-# Proyek UTS AR/VR: Aplikasi Klasifikasi Gender Real-time
+# Proyek UTS AR/VR: Aplikasi Klasifikasi Gender
 
 Aplikasi ini merupakan proyek **Augmented Reality (AR)** untuk platform Android yang dibuat menggunakan **Unity** sebagai bagian dari proyek Ujian Tengah Semester (UTS) mata kuliah Augmented & Virtual Reality.
 Aplikasi mampu melakukan **klasifikasi gender (Perempuan/Laki-laki)** secara *real-time* berdasarkan input dari kamera depan perangkat.
