@@ -165,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 63285571}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 540, y: 960, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -187,7 +187,7 @@ MonoBehaviour:
   <trackablesChanged>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  m_FacePrefab: {fileID: 8603584075298356440, guid: 60895161e2882cd4a8a3f85434ce3cf9, type: 3}
+  m_FacePrefab: {fileID: 6940959830605707395, guid: d65fe3c920acd674291a34fc72e935dc, type: 3}
   m_MaximumFaceCount: 1
 --- !u!114 &63285577
 MonoBehaviour:
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a55f7ea32de6d74cbf7dd7fa36cbe09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelFileName: modelGender.tflite
+  modelFileName: GenderClass.tflite
 --- !u!114 &63285578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +216,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mlManager: {fileID: 63285577}
   faceManager: {fileID: 63285576}
-  predictionCooldown: 2
+  themes:
+  - malePrefab: {fileID: 6556796551192124091, guid: 046d425bd3df9564aa7fde8e8e93fcbf, type: 3}
+    femalePrefab: {fileID: 2863493124278868189, guid: 8517441cb06fa064494bc6859bad7b44, type: 3}
+  predictionCooldown: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +476,7 @@ Transform:
   m_GameObject: {fileID: 1391477169}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 540, y: 960, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

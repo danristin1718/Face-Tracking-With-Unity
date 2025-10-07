@@ -2,105 +2,159 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.ARFoundation;
 using System;
+using System.Collections.Generic;
 
 [System.Serializable]
-public class PredictionResponse
+public class PredictionOutput
 {
     public double confidence;
     public string prediction;
 }
 
+[System.Serializable]
+public class FilterSet
+{
+    public GameObject maleFilter;
+    public GameObject femaleFilter;
+}
+
 public class IntegrationManager : MonoBehaviour
 {
-    [Header("Integrasi ML Lokal (TFLite)")]
+    [Header("Integrasi Model ML Lokal (TFLite)")]
     public MLManager mlManager;
 
-    [Header("Integrasi AR Camera")]
+    [Header("Komponen AR Camera")]
     public ARFaceManager faceManager;
 
-    [Header("Hasil Prediksi Terbaru (bisa diakses script lain)")]
-    public PredictionResponse LatestPrediction { get; private set; }
+    [Header("Kumpulan Filter Berdasarkan Gender")]
+    public List<FilterSet> filterCollections;
 
-    // Event: dipanggil setiap kali ada hasil prediksi baru
-    public event Action<PredictionResponse> OnPredictionUpdated;
+    [Header("Hasil Prediksi Terakhir")]
+    public PredictionOutput LatestResult { get; private set; }
 
-    private bool isFaceTracked = false;
-    private bool isProcessing = false;
+    public event Action<PredictionOutput> OnPredictionUpdated;
 
-    // Opsional: jeda antar prediksi agar tidak berat (dalam detik)
-    [SerializeField] private float predictionCooldown = 2.0f;
-    private float lastPredictionTime = 0f;
+    private bool isFaceDetected = false;
+    private bool isBusy = false;
+    private int activeFilterIndex = 0;
+
+    [SerializeField] private float cooldownBetweenPredictions = 2.0f;
+    private float lastRunTime = 0f;
+
+    void Start()
+    {
+        // 🟢 Jika hanya 1 filter set, otomatis dipakai
+        if (filterCollections != null && filterCollections.Count > 0)
+        {
+            activeFilterIndex = 0;
+            Debug.Log($"[IntegrationManager] Filter aktif default: {activeFilterIndex}");
+        }
+        else
+        {
+            Debug.LogWarning("[IntegrationManager] Tidak ada filter set yang disediakan!");
+        }
+    }
 
     void OnEnable()
     {
         if (faceManager != null)
-            faceManager.facesChanged += OnFacesChanged;
+            faceManager.facesChanged += HandleFaceChange;
     }
 
     void OnDisable()
     {
         if (faceManager != null)
-            faceManager.facesChanged -= OnFacesChanged;
+            faceManager.facesChanged -= HandleFaceChange;
     }
 
-    private void OnFacesChanged(ARFacesChangedEventArgs eventArgs)
+    private void HandleFaceChange(ARFacesChangedEventArgs evt)
     {
-        if (eventArgs.added.Count > 0 && !isFaceTracked && !isProcessing)
+        if (evt.added.Count > 0 && !isFaceDetected && !isBusy)
         {
-            isFaceTracked = true;
-            Debug.Log("[IntegrationManager] Wajah terdeteksi, mulai prediksi...");
-            StartCoroutine(ProcessPrediction());
+            isFaceDetected = true;
+            StartCoroutine(RunPredictionRoutine());
         }
-        else if (eventArgs.removed.Count > 0)
+        else if (evt.removed.Count > 0)
         {
-            isFaceTracked = false;
-            Debug.Log("[IntegrationManager] Wajah hilang dari kamera.");
+            isFaceDetected = false;
         }
     }
 
-    private IEnumerator ProcessPrediction()
+    private IEnumerator RunPredictionRoutine()
     {
-        // Hindari prediksi berulang terlalu cepat
-        if (isProcessing || Time.time - lastPredictionTime < predictionCooldown)
+        if (isBusy || Time.time - lastRunTime < cooldownBetweenPredictions)
             yield break;
 
-        isProcessing = true;
-        lastPredictionTime = Time.time;
+        isBusy = true;
+        lastRunTime = Time.time;
 
         yield return new WaitForEndOfFrame();
 
-        // Ambil gambar dari frame kamera
-        Texture2D screenTexture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-        screenTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-        screenTexture.Apply();
+        // Ambil snapshot dari kamera
+        Texture2D snapshot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+        snapshot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        snapshot.Apply();
 
-        // Jalankan prediksi lewat MLManager (lokal)
-        string resultJson = mlManager.Predict(screenTexture);
-        Destroy(screenTexture);
+        string jsonResult = mlManager.Predict(snapshot);
+        Destroy(snapshot);
 
-        if (!string.IsNullOrEmpty(resultJson))
+        if (!string.IsNullOrEmpty(jsonResult))
         {
-            Debug.Log("[MLManager] Hasil prediksi: " + resultJson);
-
-            try
-            {
-                // Konversi JSON ke objek PredictionResponse
-                LatestPrediction = JsonUtility.FromJson<PredictionResponse>(resultJson);
-                Debug.Log($"[IntegrationManager] Prediksi: {LatestPrediction.prediction} ({LatestPrediction.confidence:F2})");
-
-                // Kirim notifikasi ke script lain jika berlangganan event
-                OnPredictionUpdated?.Invoke(LatestPrediction);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning("[IntegrationManager] Gagal parse JSON hasil prediksi: " + e.Message);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[MLManager] Gagal mendapatkan hasil prediksi.");
+            LatestResult = JsonUtility.FromJson<PredictionOutput>(jsonResult);
+            ApplyFilterBasedOnPrediction(LatestResult);
+            OnPredictionUpdated?.Invoke(LatestResult);
         }
 
-        isProcessing = false;
+        isBusy = false;
+    }
+
+    private void ApplyFilterBasedOnPrediction(PredictionOutput result)
+    {
+        if (filterCollections == null || filterCollections.Count == 0)
+        {
+            Debug.LogWarning("[IntegrationManager] Belum ada filter yang diatur!");
+            return;
+        }
+
+        FilterSet chosenSet = filterCollections[activeFilterIndex];
+        GameObject nextFilter = result.prediction.ToLower() == "perempuan"
+            ? chosenSet.femaleFilter
+            : chosenSet.maleFilter;
+
+        if (nextFilter == null)
+        {
+            Debug.LogWarning("[IntegrationManager] Filter untuk gender ini belum diset!");
+            return;
+        }
+
+        if (faceManager.facePrefab != nextFilter)
+        {
+            faceManager.facePrefab = nextFilter;
+            StartCoroutine(ReinitializeFaceManager());
+            Debug.Log($"[IntegrationManager] Filter berubah ke: {nextFilter.name}");
+        }
+    }
+
+    private IEnumerator ReinitializeFaceManager()
+    {
+        faceManager.enabled = false;
+        yield return null;
+        faceManager.enabled = true;
+    }
+
+    // Hanya aktif kalau ada lebih dari 1 filter set
+    public void SwitchFilterSet(int index)
+    {
+        if (filterCollections == null || filterCollections.Count <= 1)
+        {
+            Debug.Log("[IntegrationManager] Hanya ada satu filter — pemilihan dinonaktifkan.");
+            return;
+        }
+
+        if (index >= 0 && index < filterCollections.Count)
+        {
+            activeFilterIndex = index;
+            Debug.Log($"[IntegrationManager] Filter aktif diganti ke: {index}");
+        }
     }
 }

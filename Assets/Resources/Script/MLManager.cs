@@ -57,8 +57,8 @@ public class MLManager : MonoBehaviour
             return null;
         }
         
-        int inputWidth = 64;
-        int inputHeight = 64;
+        int inputWidth = 224;
+        int inputHeight = 224;
         var inputTensor = new float[1, inputWidth, inputHeight, 3];
 
         // Resize gambar ke ukuran input model
