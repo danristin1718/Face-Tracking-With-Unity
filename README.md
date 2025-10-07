@@ -23,8 +23,8 @@ Proyek ini dikerjakan oleh:
 | 2  | Anja Bunga Aditya | 2210511161 |
 | 3  | Noer Fauzan Detya Gulfiar | 2210511151 |
 | 4  | Nathan Abigail Rahman | 2410511036 |
-| 5  | [Nama Lengkap Anggota 5] | [NPM Anggota 5] |
-| 6  | [Nama Lengkap Anggota 6] | [NPM Anggota 6] |
+| 5  | ⁠Melva Fereyzha Kirana Myko Putri | 2410511165 |
+| 6  | Jeremia Marco Namara | 2410511143 |
 
 ---
 
