@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 3820597530829078603}
   - component: {fileID: 3820597530829078602}
   m_Layer: 0
-  m_Name: AR Default Face
+  m_Name: AR SunGlass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
