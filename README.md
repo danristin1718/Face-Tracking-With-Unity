@@ -211,10 +211,3 @@ git clone https://github.com/danristin1718/Face-Tracking-With-Unity.git
 - Pastikan kamera depan aktif dan izin kamera diberikan.
 
 ---
-
-## 🧩 Catatan Tambahan
-
-- Proyek ini **tidak menggunakan Flask atau REST API**.  
-- Model TensorFlow Lite berjalan **sepenuhnya lokal** di perangkat Android.  
-- Plugin TensorFlow Lite dari **Koki Ibukuro** digunakan untuk menjalankan inferensi ML di Unity.  
-- File model (`model.tflite`) harus memiliki input shape `(1, 224, 224, 3)`.
