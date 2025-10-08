@@ -32,7 +32,7 @@ Aplikasi ini memiliki tiga *scene* utama:
 
 1. **Splash Screen** – Menampilkan tampilan pembuka selama beberapa detik.
 2. **Main Menu Scene** – Menu utama dengan tombol **“Open Camera”**.
-3. **Camera Scene** – Mengaktifkan kamera depan dan melakukan klasifikasi gender menggunakan model **model.tflite** yang tersimpan secara lokal.
+3. **Camera Scene** – Mengaktifkan kamera depan dan melakukan klasifikasi gender menggunakan model **GenderClassModel.tflite** yang tersimpan secara lokal.
 
 ---
 
