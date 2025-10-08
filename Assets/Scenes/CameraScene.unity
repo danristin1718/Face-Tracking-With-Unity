@@ -217,9 +217,15 @@ MonoBehaviour:
   mlManager: {fileID: 63285577}
   faceManager: {fileID: 63285576}
   filterCollections:
+<<<<<<< HEAD:Assets/Scenes/CameraScene.unity
   - maleFilter: {fileID: 1203478470863174021, guid: 08de6c9a6cdc31f4e9141b9860406d0b, type: 3}
     femaleFilter: {fileID: 3820597530829078601, guid: eef1c334edea95d4398dd9795a98dec3, type: 3}
   cooldownBetweenPredictions: 2
+=======
+  - maleFilter: {fileID: 1203478470863174021, guid: a1b5aadb4c47e3942967608e86e358b1, type: 3}
+    femaleFilter: {fileID: 3820597530829078601, guid: d6cd11411290efb4789970b25e1192fe, type: 3}
+  cooldownBetweenPredictions: 1
+>>>>>>> da33322355ca6fb504dde26f07cf703814e235dd:Assets/Scenes/Scene1.unity
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

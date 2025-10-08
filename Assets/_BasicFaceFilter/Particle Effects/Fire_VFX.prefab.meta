@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_BasicFaceFilter/Particle Effects/Fire_VFX.prefab.meta
 guid: b5c43875392269c49beedc9cb1cfc14d
+========
+guid: d6cd11411290efb4789970b25e1192fe
+>>>>>>>> da33322355ca6fb504dde26f07cf703814e235dd:Assets/Resources/Prefab/AR SunGlass.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

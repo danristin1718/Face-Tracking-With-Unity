@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources/Prefab/AR Kumis.prefab.meta
 guid: 08de6c9a6cdc31f4e9141b9860406d0b
+=======
+<<<<<<<< HEAD:Assets/_BasicFaceFilter/Particle Effects/Dizzy_VFX.prefab.meta
+guid: 5c1f8d39f6972a24080af43123248bff
+========
+guid: a1b5aadb4c47e3942967608e86e358b1
+>>>>>>>> da33322355ca6fb504dde26f07cf703814e235dd:Assets/Resources/Prefab/AR Kumis.prefab.meta
+>>>>>>> da33322355ca6fb504dde26f07cf703814e235dd:Assets/Prefab/AR Kumis.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
