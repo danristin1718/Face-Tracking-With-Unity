@@ -1,8 +1,8 @@
 # Proyek UTS AR/VR: Aplikasi Klasifikasi Gender
 
-Aplikasi ini merupakan proyek **Augmented Reality (AR)** untuk platform Android yang dibuat menggunakan **Unity** sebagai bagian dari proyek Ujian Tengah Semester (UTS) mata kuliah Augmented & Virtual Reality.
-Aplikasi mampu melakukan **klasifikasi gender (Perempuan/Laki-laki)** secara *real-time* berdasarkan input dari kamera depan perangkat.
-Proyek ini menggunakan **arsitektur klien–server**, di mana proses inferensi *machine learning* dilakukan melalui **REST API lokal** yang dibangun dengan **Flask (Python)**.
+Aplikasi ini merupakan proyek **Augmented Reality (AR)** untuk platform Android yang dibuat menggunakan **Unity** sebagai bagian dari proyek Ujian Tengah Semester (UTS) mata kuliah Augmented & Virtual Reality.  
+Aplikasi mampu melakukan **klasifikasi gender (Perempuan/Laki-laki)** secara *real-time* berdasarkan input dari kamera depan perangkat.  
+Proyek ini **tidak menggunakan arsitektur klien–server**, melainkan model *machine learning* dijalankan secara **lokal** melalui file **model.tflite** menggunakan **TensorFlow Lite plugin dari Koki Ibukuro**.
 
 ---
 
@@ -15,254 +15,206 @@ Proyek ini menggunakan **arsitektur klien–server**, di mana proses inferensi *
 
 ## 👥 Anggota Kelompok
 
-Proyek ini dikerjakan oleh:
-
 | No | Nama Lengkap Anggota | NPM |
 |----|-----------------------|-----|
 | 1  | Dana Christin | 2210511115 |
 | 2  | Anja Bunga Aditya | 2210511161 |
 | 3  | Noer Fauzan Detya Gulfiar | 2210511151 |
 | 4  | Nathan Abigail Rahman | 2410511036 |
-| 5  | ⁠Melva Fereyzha Kirana Myko Putri | 2410511165 |
+| 5  | Melva Fereyzha Kirana Myko Putri | 2410511165 |
 | 6  | Jeremia Marco Namara | 2410511143 |
 
 ---
 
 ## 🎬 Alur Kerja Aplikasi
 
-Aplikasi ini memiliki alur pengguna yang terdiri dari tiga *scene* utama:
+Aplikasi ini memiliki tiga *scene* utama:
 
-1. **Splash Screen**  
-   Tampilan pembuka yang muncul beberapa detik saat aplikasi pertama dijalankan.
-
-2. **Main Menu Scene**  
-   Setelah splash screen, pengguna masuk ke menu utama yang berisi judul aplikasi dan tombol **"Open Camera"**.
-
-3. **Camera Scene**  
-   Setelah menekan tombol, aplikasi akan beralih ke scene utama, mengaktifkan kamera depan, dan mulai mengirim gambar ke server untuk klasifikasi.  
-   Hasil prediksi (label dan skor kepercayaan) akan ditampilkan di layar.
+1. **Splash Screen** – Menampilkan tampilan pembuka selama beberapa detik.
+2. **Main Menu Scene** – Menu utama dengan tombol **“Open Camera”**.
+3. **Camera Scene** – Mengaktifkan kamera depan dan melakukan klasifikasi gender menggunakan model **model.tflite** yang tersimpan secara lokal.
 
 ---
 
-## ✨ Fitur Utama & Tambahan
+## ✨ Fitur Utama
 
-- **Klasifikasi Gender** — Menganalisis gambar dari kamera depan untuk memprediksi gender.  
-- **Arsitektur Klien–Server** — Proses inferensi AI dilakukan di server Flask lokal agar performa di perangkat tetap optimal.  
-- **Alur UI Lengkap** — Implementasi tiga halaman: Splash Screen → Menu Utama → Scene AR.  
-- **Filter Wajah Dinamis (Fitur Tambahan)** — Berdasarkan hasil klasifikasi, aplikasi menampilkan *prefab* atau filter 3D berbeda di wajah pengguna (menggunakan AR Face Manager).
+- **Klasifikasi Gender (Local)** – Model TensorFlow Lite berjalan langsung di perangkat Android tanpa koneksi jaringan.  
+- **Alur UI Lengkap** – Tiga scene: Splash Screen → Menu Utama → Camera Scene.  
+- **Filter AR Dinamis** – Menampilkan *prefab* wajah berbeda sesuai hasil klasifikasi gender.  
 
 ---
 
 ## 🛠️ Arsitektur & Teknologi
 
-Proyek dibagi menjadi dua komponen utama: **Frontend (Unity)** dan **Backend (Flask)**.
-
----
-
-### 🧩 1. Frontend (Unity)
+### 🧩 Unity 
 
 **Engine:** Unity  
-**Editor Digunakan:** Unity Editor 6.0  
+**Editor:** Unity Editor 6.0  
+**Plugin Tambahan:** TensorFlow Lite for Unity (Koki Ibukuro)  
 **Platform Target:** Android  
 
-**Paket Utama:**
-- AR Foundation  
-- ARCore XR Plugin  
-
-**Struktur Folder Unity:**
+**Struktur Folder:**
 ```
 Assets/
-├── Prefabs/        # Prefab filter untuk wajah
+├── Prefabs/        
 ├── Resources/
-│   ├── Script/     # Semua script C#
-│   └── UI/         # Aset gambar UI
-│   └── Prefab/     # Semua prefab
-└── Scenes/         # Semua file scene
-│   └── SplashScreenScene.unity
-│   └── MainMenuScene.unity
-│   └── CameraScene.unity
+│   ├── Script/     
+│   └── UI/         
+│   └── Prefab/     
+└── Scenes/         
+    ├── SplashScreenScene.unity
+    ├── MainMenuScene.unity
+    └── CameraScene.unity
 ```
----
-
-### ⚙️ 2. Backend (Server Flask Lokal)
-
-**Framework:** Flask (Python)  
-**Model:** TensorFlow/Keras (.h5)  
-
-**Fungsi:**  
-- Menerima gambar dari Unity  
-- Melakukan pra-pemrosesan  
-- Menjalankan prediksi dengan model  
-- Mengembalikan hasil dalam format JSON  
-
-**Endpoint API:**
-- `GET /` → Health check  
-- `POST /predict` → Prediksi gender berdasarkan gambar
 
 ---
 
-## 💻 Penjelasan Script C# (Frontend)
+## 💻 Penjelasan Script C#
 
-### **SplashScreenManager.cs**
-**Tugas:** Mengatur durasi tampilan splash screen.  
-**Cara kerja:** Menggunakan `Invoke()` untuk memanggil `LoadNextScene()` setelah jeda 3 detik agar otomatis berpindah ke menu utama.
+### 1. SplashScreenManager.cs
+**Fungsi:** Menampilkan splash screen selama beberapa detik lalu berpindah ke *Main Menu*.
+
+```csharp
+public class SplashScreenManager : MonoBehaviour
+{
+    public float delay = 3f;
+    public string sceneToLoad = "MainMenuScene";
+
+    void Start()
+    {
+        Invoke("LoadNextScene", delay);
+    }
+
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene(sceneToLoad);
+    }
+}
+```
 
 ---
 
-### **MainMenuManager.cs**
-**Tugas:** Menangani interaksi menu utama.  
-**Cara kerja:** Fungsi publik `GoToARScene()` dipanggil saat tombol “Open Camera” ditekan. Fungsi ini memuat *scene* utama (MainScene).
+### 2. MainMenuManager.cs
+**Fungsi:** Menangani tombol “Open Camera” untuk masuk ke scene utama.
+
+```csharp
+public class MainMenuManager : MonoBehaviour
+{
+    public string arSceneName = "CameraScene";
+
+    public void GoToARScene()
+    {
+        SceneManager.LoadScene(arSceneName);
+    }
+}
+```
 
 ---
 
-### **GenderClassifierAR.cs / APIClassifier.cs**
-**Tugas:** Komponen utama untuk komunikasi Unity–Server Flask.
+### 3. MLManager.cs
+**Fungsi:** Menjalankan model *TensorFlow Lite* secara lokal menggunakan plugin Koki Ibukuro.
 
-**Cara kerja:**
-- `Start()` → Inisialisasi ARCameraManager dan alamat server.  
-- `OnCameraFrameReceived()` → Menangkap frame kamera, dikirim tiap 1 detik.  
-- `UploadAndPredict()` → Coroutine asynchronous untuk mengirim gambar ke server menggunakan `WWWForm`.  
-- Setelah respons diterima, hasil JSON di-*parse* untuk menampilkan label dan confidence di UI.
+```csharp
+using TensorFlowLite;
+
+public class MLManager : MonoBehaviour
+{
+    [SerializeField] private TextAsset modelFile;
+    private Interpreter interpreter;
+    private float[,,,] inputTensor = new float[1, 224, 224, 3];
+    private float[,,] outputTensor = new float[1, 1, 2];
+
+    void Start()
+    {
+        interpreter = new Interpreter(modelFile.bytes);
+        interpreter.AllocateTensors();
+    }
+
+    public string Predict(Texture2D inputTexture)
+    {
+        // Konversi gambar ke tensor input
+        var pixels = inputTexture.GetPixels32();
+        for (int y = 0; y < 224; y++)
+        {
+            for (int x = 0; x < 224; x++)
+            {
+                Color32 color = pixels[y * 224 + x];
+                inputTensor[0, y, x, 0] = color.r / 255f;
+                inputTensor[0, y, x, 1] = color.g / 255f;
+                inputTensor[0, y, x, 2] = color.b / 255f;
+            }
+        }
+
+        // Jalankan inferensi
+        interpreter.SetInputTensorData(0, inputTensor);
+        interpreter.Invoke();
+        interpreter.GetOutputTensorData(0, outputTensor);
+
+        float femaleProb = outputTensor[0, 0, 0];
+        float maleProb = outputTensor[0, 0, 1];
+
+        string label = maleProb > femaleProb ? "Laki-laki" : "Perempuan";
+        float confidence = Mathf.Max(maleProb, femaleProb);
+
+        return $"{label} ({confidence * 100f:F2}%)";
+    }
+}
+```
+
+---
+
+### 4. IntegrationManager.cs
+**Fungsi:** Menghubungkan hasil prediksi ML dengan *AR Face Manager* untuk menampilkan filter yang sesuai.
+
+```csharp
+private void ApplyFilterBasedOnPrediction(string label)
+{
+    FilterSet chosenSet = filterCollections[activeFilterIndex];
+    GameObject nextFilter = label.ToLower() == "perempuan"
+        ? chosenSet.femaleFilter
+        : chosenSet.maleFilter;
+
+    if (faceManager.facePrefab != nextFilter)
+    {
+        faceManager.facePrefab = nextFilter;
+        StartCoroutine(ReinitializeFaceManager());
+    }
+}
+```
+
+---
+
+## 💡 Alur Eksekusi
+
+1. Splash screen muncul 3 detik.  
+2. Beralih ke menu utama.  
+3. Pengguna klik “Open Camera”.  
+4. Kamera depan aktif dan model `.tflite` dijalankan untuk klasifikasi.  
+5. Filter wajah berubah sesuai hasil prediksi gender.  
 
 ---
 
 ## 🚀 Panduan Menjalankan Proyek
 
-Berikut langkah-langkah untuk menjalankan proyek ini dari GitHub.
-
----
-
-### 🔹 Langkah 1: Clone Repositori
-
+### 1. Unduh atau Clone Repositori
 ```bash
 git clone https://github.com/danristin1718/Face-Tracking-With-Unity.git
 ```
 
----
+### 2. Buka Proyek di Unity
+1. Buka Unity Hub → **Open Project**.  
+2. Pastikan TensorFlow Lite plugin dari Koki Ibukuro sudah di-*import*.  
+3. Letakkan file `model.tflite` di folder `Assets/StreamingAssets/`.  
 
-### 🔹 Langkah 2: Menjalankan Backend (Server Flask)
-
-Masuk ke folder server, lalu instal semua dependensi:
-
-```bash
-pip install Flask tensorflow Pillow numpy
-```
-
-Pastikan file **model.h5** ada di direktori yang sama dengan `server.py`.
-
----
-
-### 🔹 Langkah 3: Jalankan Server Flask
-
-Gunakan perintah berikut untuk menjalankan server:
-
-```bash
-python server.py
-```
-
-Setelah berjalan, server akan menampilkan pesan:
-
-```
-==============================
-Model berhasil dimuat. Server siap menerima permintaan.
-==============================
-```
-
-Catat **alamat IPv4** komputer Anda dengan perintah berikut (Windows):
-
-```bash
-ipconfig
-```
-
----
-
-### 🔹 Langkah 4: Menjalankan Frontend (Unity)
-
-1. Buka Unity Hub → klik **Open** → arahkan ke folder proyek hasil clone.  
-2. Buka **MainScene** dari `Assets/Scenes/`.  
-3. Pilih **AR Session Origin** di Hierarchy.  
-4. Pada script `GenderClassifierAR`, ubah **Server IP** sesuai alamat IPv4 komputer yang menjalankan Flask.  
-5. Buka menu:  
-   **File > Build Settings...**  
-   - Tambahkan ketiga scene (`SplashScreenScene`, `MainMenuScene`, `MainScene`)  
-   - Pilih platform **Android**  
-   - Klik **Build And Run**
-
-⚠️ Pastikan perangkat Android dan komputer berada di **jaringan WiFi yang sama**.
-
----
-
-## 🧠 Kode Server (server.py)
-
-```python
-from flask import Flask, request, jsonify
-import tensorflow as tf
-from PIL import Image
-import numpy as np
-import io
-
-# --- PENGATURAN ---
-H5_MODEL_PATH = "model.h5"
-INPUT_WIDTH = 64
-INPUT_HEIGHT = 64
-LABELS = ["Perempuan", "Laki-laki"]
-
-# --- INISIALISASI ---
-app = Flask(__name__)
-model = tf.keras.models.load_model(H5_MODEL_PATH)
-print("="*30)
-print("Model berhasil dimuat. Server siap menerima permintaan.")
-print("="*30)
-
-# --- FUNGSI PREDIKSI ---
-def prepare_image(image_bytes):
-    img = Image.open(io.BytesIO(image_bytes))
-    if img.mode != "RGB":
-        img = img.convert("RGB")
-    img = img.resize((INPUT_WIDTH, INPUT_HEIGHT))
-    img_array = np.array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
-    return img_array
-
-# --- ENDPOINT API ---
-@app.route("/predict", methods=["POST"])
-def predict():
-    if 'file' not in request.files:
-        return jsonify({"error": "File tidak ditemukan"}), 400
-    
-    file = request.files['file']
-    img_bytes = file.read()
-    prepared_image = prepare_image(img_bytes)
-    predictions = model.predict(prepared_image)
-    
-    score = float(np.max(predictions))
-    label_index = int(np.argmax(predictions))
-    label = LABELS[label_index]
-    
-    return jsonify({
-        "label": label,
-        "confidence": score
-    })
-
-@app.route("/", methods=["GET"])
-def health_check():
-    return jsonify({
-        "status": "ok",
-        "message": "Server is running and the model is loaded."
-    })
-
-# --- MENJALANKAN SERVER ---
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
-```
+### 3. Build ke Android
+- **Build Settings → Android → Build And Run**  
+- Pastikan kamera depan aktif dan izin kamera diberikan.
 
 ---
 
 ## 🧩 Catatan Tambahan
 
-- Pastikan Flask dan TensorFlow telah terinstal dengan versi kompatibel.  
-- Jalankan Flask sebelum membuka aplikasi Unity.  
-- Gunakan jaringan WiFi yang sama agar koneksi antar perangkat berhasil.  
-- File `model.h5` harus sesuai dengan format input `(64, 64, 3)`.
-
----
+- Proyek ini **tidak menggunakan Flask atau REST API**.  
+- Model TensorFlow Lite berjalan **sepenuhnya lokal** di perangkat Android.  
+- Plugin TensorFlow Lite dari **Koki Ibukuro** digunakan untuk menjalankan inferensi ML di Unity.  
+- File model (`model.tflite`) harus memiliki input shape `(1, 224, 224, 3)`.
