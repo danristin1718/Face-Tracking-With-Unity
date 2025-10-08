@@ -204,7 +204,7 @@ git clone https://github.com/danristin1718/Face-Tracking-With-Unity.git
 ### 2. Buka Proyek di Unity
 1. Buka Unity Hub → **Open Project**.  
 2. Pastikan TensorFlow Lite plugin dari Koki Ibukuro sudah di-*import*.  
-3. Letakkan file `model.tflite` di folder `Assets/StreamingAssets/`.  
+3. Letakkan file `GenderClassModel.tflite` di folder `Assets/StreamingAssets/`.  
 
 ### 3. Build ke Android
 - **Build Settings → Android → Build And Run**  
