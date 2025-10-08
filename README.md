@@ -190,7 +190,8 @@ private void ApplyFilterBasedOnPrediction(string label)
 2. Beralih ke menu utama.  
 3. Pengguna klik “Open Camera”.  
 4. Kamera depan aktif dan model `.tflite` dijalankan untuk klasifikasi.  
-5. Filter wajah berubah sesuai hasil prediksi gender.  
+5. Filter wajah berubah sesuai hasil prediksi gender.
+6. Akan muncul UI info berupa hasil pengolahan ML terhadap deteksi gambar wajah, apabila ML mendeteksi wajah perempuan, maka akan tampil sebagai "Gender: Perempuan" dengan confidence yang berbeda-beda, begitupun dengan deteksi wajah lelaki.
 
 ---
 
