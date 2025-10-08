@@ -19,7 +19,7 @@ Proyek ini dikerjakan oleh:
 
 | No | Nama Lengkap Anggota | NPM |
 |----|-----------------------|-----|
-| 1  | Dana Christin | 221051115 |
+| 1  | Dana Christin | 2210511115 |
 | 2  | Anja Bunga Aditya | 2210511161 |
 | 3  | Noer Fauzan Detya Gulfiar | 2210511151 |
 | 4  | Nathan Abigail Rahman | 2410511036 |
@@ -35,10 +35,10 @@ Aplikasi ini memiliki alur pengguna yang terdiri dari tiga *scene* utama:
 1. **Splash Screen**  
    Tampilan pembuka yang muncul beberapa detik saat aplikasi pertama dijalankan.
 
-2. **Menu Utama**  
+2. **Main Menu Scene**  
    Setelah splash screen, pengguna masuk ke menu utama yang berisi judul aplikasi dan tombol **"Open Camera"**.
 
-3. **Scene AR**  
+3. **Camera Scene**  
    Setelah menekan tombol, aplikasi akan beralih ke scene utama, mengaktifkan kamera depan, dan mulai mengirim gambar ke server untuk klasifikasi.  
    Hasil prediksi (label dan skor kepercayaan) akan ditampilkan di layar.
 
@@ -76,14 +76,12 @@ Assets/
 ├── Resources/
 │   ├── Script/     # Semua script C#
 │   └── UI/         # Aset gambar UI
+│   └── Prefab/     # Semua prefab
 └── Scenes/         # Semua file scene
+│   └── SplashScreenScene.unity
+│   └── MainMenuScene.unity
+│   └── CameraScene.unity
 ```
-
-**Daftar Scene:**
-- `SplashScreenScene.unity`
-- `MainMenuScene.unity`
-- `MainScene.unity`
-
 ---
 
 ### ⚙️ 2. Backend (Server Flask Lokal)
