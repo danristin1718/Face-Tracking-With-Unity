@@ -2,7 +2,7 @@
 
 Aplikasi ini merupakan proyek **Augmented Reality (AR)** untuk platform Android yang dibuat menggunakan **Unity** sebagai bagian dari proyek Ujian Tengah Semester (UTS) mata kuliah Augmented & Virtual Reality.  
 Aplikasi mampu melakukan **klasifikasi gender (Perempuan/Laki-laki)** secara *real-time* berdasarkan input dari kamera depan perangkat.  
-Proyek ini **tidak menggunakan arsitektur klien–server**, melainkan model *machine learning* dijalankan secara **lokal** melalui file **model.tflite** menggunakan **TensorFlow Lite plugin dari Koki Ibukuro**.
+Proyek ini menggunakan model *machine learning* yang dijalankan secara **lokal** melalui file **GenderClassModel.tflite** menggunakan **TensorFlow Lite plugin dari Koki Ibukuro**.
 
 ---
 
