@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ace5b1b442e6464c925507dcbeb48ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arSceneName: MainScene
+  arSceneName: CameraScene
 --- !u!1 &1951795476
 GameObject:
   m_ObjectHideFlags: 0
