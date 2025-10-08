@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class MLManager : MonoBehaviour
 {
     [Tooltip("Nama file model .tflite yang ada di dalam folder StreamingAssets")]
-    public string modelFileName = "modelGender.tflite";
+    public string modelFileName = "GenderClassModel.tflite";
 
     private float[,] outputTensor = new float[1, 2];
 
