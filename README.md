@@ -264,5 +264,6 @@ if __name__ == "__main__":
 - Jalankan Flask sebelum membuka aplikasi Unity.  
 - Gunakan jaringan WiFi yang sama agar koneksi antar perangkat berhasil.  
 - File `model.h5` harus sesuai dengan format input `(64, 64, 3)`.
+- Untuk repository final aplikasi yang sudah berjalan sesuai berada di repo "Final-APK" .
 
 ---
